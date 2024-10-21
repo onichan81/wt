@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Name's Personal Website</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1 id="greeting">Welcome to My Personal Website</h1>
+        <nav>
+            <ul>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#interests">Interests</a></li>
+                <li><a href="#experiences">Experiences</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="skills">
+        <h2>Skills</h2>
+        <ul>
+            <li>HTML & CSS</li>
+            <li>JavaScript</li>
+            <li>Ruby on Rails</li>
+            <li>Python</li>
+            <li>SQL</li>
+        </ul>
+    </section>
+
+    <section id="interests">
+        <h2>Interests</h2>
+        <ul>
+            <li>Web Development</li>
+            <li>Data Science</li>
+            <li>Artificial Intelligence</li>
+            <li>Traveling</li>
+            <li>Photography</li>
+        </ul>
+    </section>
+
+    <section id="experiences">
+        <h2>Experiences</h2>
+        <ul>
+            <li><strong>Intern at XYZ Corp</strong> (2023): Worked on web application development.</li>
+            <li><strong>Freelance Developer</strong> (2022): Built websites for small businesses.</li>
+            <li><strong>University Project</strong> (2021): Developed a data analysis tool using Python.</li>
+        </ul>
+    </section>
+
+    <footer>
+        <p>© 2024 Your Name</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
+
+header {
+    background: #4CAF50;
+    color: white;
+    padding: 10px 0;
+    text-align: center;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin: 0 15px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+}
+
+section {
+    padding: 20px;
+}
+
+h2 {
+    border-bottom: 2px solid #4CAF50;
+    padding-bottom: 10px;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    background: #f4f4f4;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    const greetingElement = document.getElementById("greeting");
+
+    greetingElement.addEventListener("click", function() {
+        greetingElement.innerText = "Hello, welcome to my personal website!";
+    });
+});

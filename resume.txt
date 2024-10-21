@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Resume of John Smith, Engineering Student">
+    <title>John Smith - Resume</title>
+    <link rel="stylesheet" href="exp02.css">
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>John Smith</h1>
+            <p>Engineering Student</p>
+            <p>Email: john.smith@example.com | Phone: (123) 456-7890 | LinkedIn: <a href="https://www.linkedin.com/in/johnsmith" target="_blank">linkedin.com/in/johnsmith</a></p>
+        </header>
+
+        <section class="education">
+            <h2>Education</h2>
+            <p><strong>Bachelor of Science in Mechanical Engineering</strong><br>
+            University of Engineering, City, State<br>
+            Expected Graduation: May 2025</p>
+        </section>
+
+        <section class="skills">
+            <h2>Skills</h2>
+            <ul>
+                <li>SolidWorks</li>
+                <li>MATLAB</li>
+                <li>Python</li>
+                <li>Project Management</li>
+                <li>CAD Design</li>
+            </ul>
+        </section>
+
+        <section class="projects">
+            <h2>Projects</h2>
+            <ul>
+                <li><strong>Robotic Arm Design</strong> - Developed a robotic arm using SolidWorks and Arduino.</li>
+                <li><strong>Solar Panel Optimization</strong> - Conducted a project analyzing the efficiency of solar panels under various conditions.</li>
+                <li><strong>Automated Irrigation System</strong> - Created a system using sensors and Python to optimize water usage.</li>
+            </ul>
+        </section>
+
+        <section class="experience">
+            <h2>Experience</h2>
+            <p><strong>Intern, Engineering Solutions Inc.</strong> - June 2023 to August 2023<br>
+            Assisted in designing mechanical components and participated in team meetings to develop innovative engineering solutions.</p>
+        </section>
+
+        <footer>
+            <p>&copy; 2024 John Smith. All rights reserved.</p>
+        </footer>
+    </div>
+
+</body>
+</html>
