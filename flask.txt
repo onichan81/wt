@@ -68,3 +68,39 @@ if __name__ == '__main__':
 - The function returns an HTML response that greets the user by name.
 
 This is a basic example to help you understand how Flask can dynamically handle parts of a URL and respond accordingly. You can expand this to create more complex applications!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+from flask import Flask
+
+# Initialize the Flask application
+app = Flask(__name__)
+
+# Route with dynamic URL part (name)
+@app.route('/hello/<name>')
+def hello_name(name):
+    # Respond by greeting the user with their name
+    return f"Hello, {name}! Welcome to the Flask app."
+
+# Run the app
+if __name__ == '__main__':
+    app.run(debug=True)
