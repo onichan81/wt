@@ -1,44 +1,29 @@
-To connect to a MySQL database using PHP and display a list of all records from a "products" table, follow these steps. You'll need to:
-
-Create a MySQL Database and Table.
-Connect to the MySQL Database using PHP.
-Fetch Data from the "products" Table.
-Display the Data on a Web Page.
-Step 1: Create a MySQL Database and Table
-Before you write any PHP code, you need to set up the MySQL database and table. You can do this in phpMyAdmin (if using XAMPP) or directly through the MySQL command line.
-
-SQL Query to Create the products Table:
-sql
-Copy code
-CREATE DATABASE shop;
-
+<!-- 
+ 
+ CREATE DATABASE IF NOT EXISTS shop;
 USE shop;
 
-CREATE TABLE products (
+CREATE TABLE IF NOT EXISTS products (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
-    description TEXT,
-    price DECIMAL(10, 2) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    description TEXT NOT NULL,
+    price DECIMAL(10, 2) NOT NULL
 );
 
--- Insert sample data
+-- Example data
 INSERT INTO products (name, description, price) VALUES
-('Product 1', 'Description for product 1', 9.99),
-('Product 2', 'Description for product 2', 19.99),
-('Product 3', 'Description for product 3', 29.99);
-Step 2: Connect to the MySQL Database using PHP
-Once the table is created, the next step is to write a PHP script to connect to the database and fetch the data.
+('Product 1', 'Description for product 1', 10.99),
+('Product 2', 'Description for product 2', 15.99),
+('Product 3', 'Description for product 3', 22.50); 
+-->
 
-PHP Script (connect to MySQL and fetch data)
-php
-Copy code
+
 <?php
-// Database credentials
-$servername = "localhost";
-$username = "root";
-$password = "";  // Default XAMPP password is empty
-$dbname = "shop";
+// Database connection parameters
+$servername = "localhost";  // MySQL server
+$username = "root";         // MySQL username (default for XAMPP)
+$password = "";             // MySQL password (default is empty for XAMPP)
+$dbname = "shop";           // Database name
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
@@ -48,301 +33,28 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Fetch all records from the products table
-$sql = "SELECT id, name, description, price FROM products";
+// SQL query to fetch all products
+$sql = "SELECT * FROM products";
 $result = $conn->query($sql);
 
-?>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Products List</title>
-    <style>
-        table {
-            width: 50%;
-            border-collapse: collapse;
-            margin: 50px auto;
-        }
-        table, th, td {
-            border: 1px solid black;
-        }
-        th, td {
-            padding: 10px;
-            text-align: left;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-    </style>
-</head>
-<body>
-
-<h2 style="text-align:center">List of Products</h2>
-
-<table>
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Product Name</th>
-            <th>Description</th>
-            <th>Price ($)</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php
-        // Check if there are any records in the table
-        if ($result->num_rows > 0) {
-            // Output data for each row
-            while($row = $result->fetch_assoc()) {
-                echo "<tr>";
-                echo "<td>" . $row["id"] . "</td>";
-                echo "<td>" . $row["name"] . "</td>";
-                echo "<td>" . $row["description"] . "</td>";
-                echo "<td>" . $row["price"] . "</td>";
-                echo "</tr>";
-            }
-        } else {
-            echo "<tr><td colspan='4'>No products found</td></tr>";
-        }
-        ?>
-    </tbody>
-</table>
-
-</body>
-</html>
-
-<?php
-// Close the database connection
-$conn->close();
-?>
-Explanation:
-Database Connection:
-
-The script connects to the MySQL database using PHP's mysqli extension with new mysqli($servername, $username, $password, $dbname).
-If the connection fails, it outputs an error message and stops execution.
-SQL Query:
-
-The script fetches all rows from the products table using the query:
-sql
-Copy code
-SELECT id, name, description, price FROM products;
-Displaying the Data:
-
-The script loops through each result row using while($row = $result->fetch_assoc()) and outputs the data in an HTML table.
-If no records are found, it displays a message saying "No products found."
-HTML Structure:
-
-The HTML includes a basic table structure with headers for ID, Product Name, Description, and Price.
-CSS is used to style the table, making it clean and readable.
-Step 3: Test the Code
-Place the PHP File:
-
-Save the above PHP code in a file named products.php.
-Place the file in your XAMPP project directory (usually C:\xampp\htdocs\your_project_folder).
-Run the File:
-
-Start the Apache and MySQL services using XAMPP Control Panel.
-Open your browser and navigate to http://localhost/your_project_folder/products.php.
-Check Output:
-
-The page will display a list of all products in the products table, along with their ID, name, description, and price.
-Common Issues and Solutions:
-Connection Issues:
-
-Make sure XAMPP’s MySQL service is running.
-Ensure that the database credentials (username, password) match your configuration.
-No Records Found:
-
-If no products are displayed, ensure that your products table has data by checking in phpMyAdmin or inserting sample data into the table.
-MySQLi Extension Missing:
-
-If you get an error regarding mysqli not being found, ensure that the MySQLi extension is enabled in your php.ini file.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-CREATE DATABASE shop;
-
-USE shop;
-
-CREATE TABLE products (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    description TEXT,
-    price DECIMAL(10, 2) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- Insert sample data
-INSERT INTO products (name, description, price) VALUES
-('Product 1', 'Description for product 1', 9.99),
-('Product 2', 'Description for product 2', 19.99),
-('Product 3', 'Description for product 3', 29.99);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<?php
-// Database credentials
-$servername = "localhost";
-$username = "root";
-$password = "";  // Default XAMPP password is empty
-$dbname = "shop";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+// Check if there are any products in the table
+if ($result->num_rows > 0) {
+    // Output data for each row
+    echo "<table border='1' cellpadding='10' cellspacing='0'>";
+    echo "<tr><th>ID</th><th>Name</th><th>Description</th><th>Price</th></tr>";
+    while($row = $result->fetch_assoc()) {
+        echo "<tr>
+                <td>" . $row["id"] . "</td>
+                <td>" . $row["name"] . "</td>
+                <td>" . $row["description"] . "</td>
+                <td>" . $row["price"] . "</td>
+              </tr>";
+    }
+    echo "</table>";
+} else {
+    echo "No products found.";
 }
 
-// Fetch all records from the products table
-$sql = "SELECT id, name, description, price FROM products";
-$result = $conn->query($sql);
-
-?>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Products List</title>
-    <style>
-        table {
-            width: 50%;
-            border-collapse: collapse;
-            margin: 50px auto;
-        }
-        table, th, td {
-            border: 1px solid black;
-        }
-        th, td {
-            padding: 10px;
-            text-align: left;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-    </style>
-</head>
-<body>
-
-<h2 style="text-align:center">List of Products</h2>
-
-<table>
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Product Name</th>
-            <th>Description</th>
-            <th>Price ($)</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php
-        // Check if there are any records in the table
-        if ($result->num_rows > 0) {
-            // Output data for each row
-            while($row = $result->fetch_assoc()) {
-                echo "<tr>";
-                echo "<td>" . $row["id"] . "</td>";
-                echo "<td>" . $row["name"] . "</td>";
-                echo "<td>" . $row["description"] . "</td>";
-                echo "<td>" . $row["price"] . "</td>";
-                echo "</tr>";
-            }
-        } else {
-            echo "<tr><td colspan='4'>No products found</td></tr>";
-        }
-        ?>
-    </tbody>
-</table>
-
-</body>
-</html>
-
-<?php
-// Close the database connection
+// Close the connection
 $conn->close();
 ?>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-SELECT id, name, description, price FROM products;
