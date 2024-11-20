@@ -1,0 +1,55 @@
+class Person
+    # Constructor to initialize the person object with name, age, and email
+    def initialize(name, age, email)
+      @name = name
+      @age = age
+      @email = email
+    end
+  
+    # Getter and setter for name
+    def name
+      @name
+    end
+  
+    def name=(new_name)
+      @name = new_name
+    end
+  
+    # Getter and setter for age
+    def age
+      @age
+    end
+  
+    def age=(new_age)
+      @age = new_age
+    end
+  
+    # Getter and setter for email
+    def email
+      @email
+    end
+  
+    def email=(new_email)
+      @email = new_email
+    end
+  end
+  
+  # Create a new Person object
+  person = Person.new("John Doe Doe", 30, "john.doe@example.com")
+  
+  # Getting the values of name, age, and email
+  puts "Name: #{person.name}"
+  puts "Age: #{person.age}"
+  puts "Email: #{person.email}"
+  
+  # Setting new values
+  person.name = "Jane Doe"
+  person.age = 28
+  person.email = "jane.doe@example.com"
+  
+  # Getting the updated values
+  puts "\nUpdated Information:"
+  puts "Name: #{person.name}"
+  puts "Age: #{person.age}"
+  puts "Email: #{person.email}"
+  
