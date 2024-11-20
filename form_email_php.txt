@@ -4,34 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact Form</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="contact.css">
 </head>
 <body>
+    <h1>Contact Us</h1>
+    <form action="contact.php" method="POST">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br>
 
-    <div class="container">
-        <h1>Contact Us</h1>
-        <form action="contact.php" method="POST" class="contact-form">
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="name" required>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br>
 
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
+        <label for="message">Message:</label>
+        <textarea id="message" name="message" rows="5" required></textarea><br>
 
-            <label for="subject">Subject:</label>
-            <input type="text" id="subject" name="subject" required>
-
-            <label for="message">Message:</label>
-            <textarea id="message" name="message" rows="5" required></textarea>
-
-            <button type="submit">Send Message</button>
-        </form>
-    </div>
-
+        <button type="submit">Send</button>
+    </form>
 </body>
 </html>
 
-<!-- Step 1 : Paste in terminal "php -S localhost:8000" 
- Step 2 : http://localhost:8000/contact.html -->
 
 
 
@@ -43,6 +34,54 @@
 
 
 
+
+
+
+
+
+
+
+
+
+body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    background-color: #f4f4f9;
+}
+h1 {
+    text-align: center;
+}
+form {
+    max-width: 400px;
+    margin: auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+input, textarea {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+button {
+    background: #007BFF;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+button:hover {
+    background: #0056b3;
+}
 
 
 
@@ -71,147 +110,29 @@
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Retrieve form data
-    $name = htmlspecialchars($_POST['name']);
-    $email = htmlspecialchars($_POST['email']);
-    $subject = htmlspecialchars($_POST['subject']);
-    $message = htmlspecialchars($_POST['message']);
+    $name = $_POST['name'];
+    $email = $_POST['email'];
+    $message = $_POST['message'];
 
-    // Validate the form inputs
-    if (!empty($name) && !empty($email) && !empty($subject) && !empty($message) && filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        
-        // Email settings
-        $to = "7011@gmail.com"; // Change this to your email address
-        $headers = "From: $email\r\n";
-        $headers .= "Reply-To: $email\r\n";
-        $email_subject = "New Contact Form Message: $subject";
-        $email_body = "You have received a new message from $name.\n\n".
-                      "Message:\n$message";
+    // Database connection
+    $conn = new mysqli("localhost", "root", "", "contact_form");
 
-        // Send email
-        if (mail($to, $email_subject, $email_body, $headers)) {
-            echo "Message sent successfully!";
-        } else {
-            echo "Message could not be sent.";
-        }
-    } else {
-        echo "Please fill in all fields correctly.";
+    // Check connection
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
     }
+
+    // Insert data into the database
+    $sql = "INSERT INTO messages (name, email, message) VALUES ('$name', '$email', '$message')";
+    if ($conn->query($sql) === TRUE) {
+        echo "Thank you, $name! Your message has been sent.";
+    } else {
+        echo "Error: " . $conn->error;
+    }
+
+    // Close the connection
+    $conn->close();
+} else {
+    echo "Invalid request.";
 }
 ?>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-}
-
-.container {
-    width: 400px;
-    background-color: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-}
-
-h1 {
-    text-align: center;
-}
-
-.contact-form {
-    display: flex;
-    flex-direction: column;
-}
-
-.contact-form label {
-    margin-top: 10px;
-}
-
-.contact-form input, .contact-form textarea {
-    padding: 10px;
-    margin-top: 5px;
-    border: 2px solid #ddd;
-    border-radius: 5px;
-    font-size: 1em;
-}
-
-.contact-form button {
-    margin-top: 20px;
-    padding: 10px;
-    background-color: #007BFF;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.contact-form button:hover {
-    background-color: #0056b3;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
