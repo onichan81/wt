@@ -1,73 +1,28 @@
-Here is how you can create a basic **Flask application** that takes the user's name from the URL and responds by greeting them.
+from flask import Flask, redirect, url_for, request
 
-### Steps to create the Flask application:
-
-1. **Install Flask**: First, ensure that you have Flask installed. If you don’t have it, you can install it via pip:
-   ```bash
-   pip install Flask
-   ```
-
-2. **Create a Python file** (e.g., `app.py`) for your Flask application.
-
-3. **Write the Flask Code**: The Flask app will capture the user's name from the URL and then display a personalized greeting.
-
-### Code Example (`app.py`):
-
-```python
-from flask import Flask
-
-# Initialize the Flask application
+# Initialize the Flask app
 app = Flask(__name__)
 
-# Route with dynamic URL part (name)
-@app.route('/hello/<name>')
-def hello_name(name):
-    # Respond by greeting the user with their name
-    return f"Hello, {name}! Welcome to the Flask app."
+# Route that handles the success page after form submission
+@app.route('/success/<name>')
+def success(name):
+    return f'Welcome, {name}!'
 
-# Run the app
+# Route for the form, it handles both GET and POST requests
+@app.route('/', methods=['POST', 'GET'])
+def home():
+    if request.method == 'POST':
+        # Get the name from the form
+        user = request.form['nm']
+        # Redirect to the success page with the user's name
+        return redirect(url_for('success', name=user))
+    else:
+        # If GET request, render the form (this is optional, as the HTML form could also be directly accessed)
+        return
+
+# Start the Flask application
 if __name__ == '__main__':
     app.run(debug=True)
-```
-
-### Explanation:
-
-- **@app.route('/hello/<name>')**: This is the URL route where `<name>` is a dynamic part of the URL. Flask will capture this part of the URL as a variable and pass it to the `hello_name()` function.
-- **hello_name(name)**: This function takes the captured name from the URL and returns a greeting with the name.
-- **app.run(debug=True)**: This runs the Flask application with debugging enabled, so any errors will be displayed in the terminal.
-
-### Running the Flask App:
-
-1. Save the file as `app.py`.
-2. Open a terminal or command prompt and navigate to the directory where `app.py` is located.
-3. Run the application with:
-   ```bash
-   python app.py
-   ```
-   You should see something like this:
-   ```
-   * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
-   ```
-
-4. Open your web browser and go to the following URL:
-   ```
-   http://127.0.0.1:5000/hello/YourName
-   ```
-   Replace `YourName` with any name, for example:
-   ```
-   http://127.0.0.1:5000/hello/John
-   ```
-
-   The response will be:
-   ```
-   Hello, John! Welcome to the Flask app.
-   ```
-
-### How It Works:
-- The URL `/hello/<name>` dynamically captures whatever name is passed in the URL after `/hello/` and sends it to the `hello_name()` function.
-- The function returns an HTML response that greets the user by name.
-
-This is a basic example to help you understand how Flask can dynamically handle parts of a URL and respond accordingly. You can expand this to create more complex applications!
 
 
 
@@ -88,19 +43,12 @@ This is a basic example to help you understand how Flask can dynamically handle 
 
 
 
-
-
-from flask import Flask
-
-# Initialize the Flask application
-app = Flask(__name__)
-
-# Route with dynamic URL part (name)
-@app.route('/hello/<name>')
-def hello_name(name):
-    # Respond by greeting the user with their name
-    return f"Hello, {name}! Welcome to the Flask app."
-
-# Run the app
-if __name__ == '__main__':
-    app.run(debug=True)
+<html>
+<body>
+    <form action="http://localhost:5000" method="post">
+        <p>Enter Name:</p>
+        <p><input type="text" name="nm" /></p>
+        <p><input type="submit" value="Submit" /></p>
+    </form>
+</body>
+</html>
