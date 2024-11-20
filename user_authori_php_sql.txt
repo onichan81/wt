@@ -1,11 +1,6 @@
-CREATE DATABASE user_auth_db;
-
-USE user_auth_db;
-
 CREATE TABLE users (
-    id INT(11) AUTO_INCREMENT PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(50) NOT NULL UNIQUE,
-    email VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL
 );
 
@@ -13,349 +8,112 @@ CREATE TABLE users (
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<?php
-// Start session
-session_start();
-
-// Database connection
-$servername = "localhost";
-$username = "root"; // Use your MySQL username
-$password = ""; // Use your MySQL password
-$dbname = "user_auth_db";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
-// Handle form submission
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $username = htmlspecialchars($_POST['username']);
-    $email = htmlspecialchars($_POST['email']);
-    $password = htmlspecialchars($_POST['password']);
-
-    // Password encryption (hashing)
-    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-
-    // Insert user into the database
-    $sql = "INSERT INTO users (username, email, password) VALUES ('$username', '$email', '$hashed_password')";
-
-    if ($conn->query($sql) === TRUE) {
-        $_SESSION['username'] = $username;
-        header("Location: welcome.php"); // Redirect to a welcome page after successful registration
-    } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
-    }
-}
-
-$conn->close();
-?>
-
-<!-- Registration Form (HTML) -->
+Login Page 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Registration</title>
+    <title>Login</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px; }
+        .form-container { max-width: 400px; margin: auto; background: white; padding: 20px; border-radius: 5px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; }
+        button { width: 100%; padding: 10px; background: #0275d8; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        button:hover { background: #025aa5; }
+        a { text-decoration: none; color: #007bff; }
+    </style>
 </head>
 <body>
-    <h2>Register</h2>
-    <form method="POST" action="register.php">
-        <label for="username">Username:</label><br>
-        <input type="text" id="username" name="username" required><br><br>
-
-        <label for="email">Email:</label><br>
-        <input type="email" id="email" name="email" required><br><br>
-
-        <label for="password">Password:</label><br>
-        <input type="password" id="password" name="password" required><br><br>
-
-        <button type="submit">Register</button>
-    </form>
-
-    <p>Already have an account? <a href="login.php">Login here</a>.</p>
+    <div class="form-container">
+        <h2>Login</h2>
+        <form method="POST" action="login.php">
+            <input type="text" name="username" placeholder="Enter Username" required>
+            <input type="password" name="password" placeholder="Enter Password" required>
+            <button type="submit">Login</button>
+        </form>
+        <p>Don't have an account? <a href="signup.php">Signup here</a></p>
+    </div>
 </body>
 </html>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <?php
-// Start session
-session_start();
-
-// Database connection
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "user_auth_db";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
-// Handle form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $email = htmlspecialchars($_POST['email']);
-    $password = htmlspecialchars($_POST['password']);
+    $username = $_POST['username'];
+    $password = $_POST['password']; // Plain text password (for simplicity)
 
-    // Retrieve user from the database
-    $sql = "SELECT * FROM users WHERE email='$email'";
+    // Database connection
+    $conn = new mysqli("localhost", "root", "", "loginsystem");
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+
+    // Check user credentials
+    $sql = "SELECT * FROM users WHERE username='$username' AND password='$password'";
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
-        // Fetch user data
-        $user = $result->fetch_assoc();
-
-        // Verify the password
-        if (password_verify($password, $user['password'])) {
-            // Create session
-            $_SESSION['username'] = $user['username'];
-            header("Location: welcome.php"); // Redirect to welcome page after successful login
-        } else {
-            echo "Invalid password!";
-        }
+        echo "<p style='color: green; text-align: center;'>Login successful! Welcome, $username.</p>";
     } else {
-        echo "No user found with this email!";
+        echo "<p style='color: red; text-align: center;'>Invalid username or password.</p>";
     }
+    $conn->close();
 }
-
-$conn->close();
 ?>
 
-<!-- Login Form (HTML) -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Login</title>
-</head>
-<body>
-    <h2>Login</h2>
-    <form method="POST" action="login.php">
-        <label for="email">Email:</label><br>
-        <input type="email" id="email" name="email" required><br><br>
-
-        <label for="password">Password:</label><br>
-        <input type="password" id="password" name="password" required><br><br>
-
-        <button type="submit">Login</button>
-    </form>
-
-    <p>Don't have an account? <a href="register.php">Register here</a>.</p>
-</body>
-</html>
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<?php
-// Start session
-session_start();
-
-// Check if the user is logged in
-if (!isset($_SESSION['username'])) {
-    header("Location: login.php");
-    exit();
-}
-
-// Greet the user
-$username = $_SESSION['username'];
-?>
+Signup Page
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome</title>
+    <title>Signup</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px; }
+        .form-container { max-width: 400px; margin: auto; background: white; padding: 20px; border-radius: 5px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; }
+        button { width: 100%; padding: 10px; background: #5cb85c; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        button:hover { background: #4cae4c; }
+        a { text-decoration: none; color: #007bff; }
+    </style>
 </head>
 <body>
-    <h2>Welcome, <?php echo $username; ?>!</h2>
-    <p>You have successfully logged in.</p>
-
-    <a href="logout.php">Logout</a>
+    <div class="form-container">
+        <h2>Signup</h2>
+        <form method="POST" action="signup.php">
+            <input type="text" name="username" placeholder="Enter Username" required>
+            <input type="password" name="password" placeholder="Enter Password" required>
+            <button type="submit">Signup</button>
+        </form>
+        <p>Already have an account? <a href="login.php">Login here</a></p>
+    </div>
 </body>
 </html>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <?php
-// Start session
-session_start();
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $username = $_POST['username'];
+    $password = $_POST['password']; // Plain text password (for simplicity)
 
-// Destroy session
-session_destroy();
+    // Database connection
+    $conn = new mysqli("localhost", "root", "", "loginsystem");
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
 
-// Redirect to login page
-header("Location: login.php");
-exit();
+    // Insert user data
+    $sql = "INSERT INTO users (username, password) VALUES ('$username', '$password')";
+    if ($conn->query($sql) === TRUE) {
+        echo "<p style='color: green; text-align: center;'>Registration successful! <a href='login.php'>Login here</a></p>";
+    } else {
+        echo "<p style='color: red; text-align: center;'>Error: " . $conn->error . "</p>";
+    }
+    $conn->close();
+}
 ?>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Testing the Authentication System
-Create the Database: Run the SQL commands to create the user_auth_db database and users table.
-Set Up the Files: Save the above PHP files (register.php, login.php, welcome.php, and logout.php) in your project directory (e.g., C:/xampp/htdocs/auth if using XAMPP).
-Run XAMPP: Make sure your Apache and MySQL servers are running.
-Register: Open http://localhost/auth/register.php in your browser to create a new account.
-Login: After registering, go to http://localhost/auth/login.php to log in using the credentials you just created.
-Welcome: Once logged in, you will be redirected to the welcome.php page.
-Logout: Click "Logout" to end the session and return to the login page.
